@@ -1,146 +1,92 @@
-/*jshint node:true*/
-
+/* eslint-env node */
 'use strict';
 
-var Funnel = require('broccoli-funnel');
-var mergeTrees = require('broccoli-merge-trees');
-var defaults = require('lodash.defaults');
-var rename = require('broccoli-stew').rename;
-var existsSync = require('exists-sync');
-var chalk = require('chalk');
-var path = require('path');
+const path = require('path');
+const util = require('util');
+const extend = util._extend;
+const mergeTrees = require('broccoli-merge-trees');
+const Funnel = require('broccoli-funnel');
+const stew = require('broccoli-stew');
+const mv = stew.mv;
+// const log = stew.log;
+const rm = stew.rm;
+const chalk = require('chalk');
 
-module.exports = {
-  name: 'tvhelpers',
-
-  included: function(app) {
-    this._super.included.apply(this, arguments);
-
-    // see: https://github.com/ember-cli/ember-cli/issues/3718
-    while (typeof app.import !== 'function' && app.app) {
-      app = app.app;
-    }
-
-    this.app = app;
-    this.tvhelperOptions = this.getConfig();
-
-    if (isFastBoot()) {
-      this.importFastBootDependencies(app);
-    } else {
-      this.importBrowserDependencies(app);
-    }
-
-    return app;
-  },
-
-  importFastBootDependencies: function(app) {
-    if (arguments.length < 1) {
-      throw new Error('Application instance must be passed to import');
-    }
-
-    var vendor = this.treePaths.vendor;
-
-    app.import(vendor + '/fastboot-tvhelpers.js');
-  },
-
-  importBrowserDependencies: function(app) {
-    if (arguments.length < 1) {
-      throw new Error('Application instance must be passed to import');
-    }
-
-    var vendor = this.treePaths.vendor;
-    var options = this.fractionOptions;
-
-    app.import({
-      development: vendor + '/fraction.js/fraction.js',
-      production: vendor + '/fraction.js/fraction.min.js'
-    }, { prepend: true });
-  },
-
-  getConfig: function() {
-    var projectConfig = ((this.project.config(process.env.EMBER_ENV) || {}).fraction || {});
-    var fractionPath = path.dirname(require.resolve('fraction.js'));
-
-    var config = defaults(projectConfig, {
-      fractionPath: fractionPath
-    });
-
-    return config;
-  },
-
-  treeForPublic: function() {
-    var publicTree = this._super.treeForPublic.apply(this, arguments);
-
-    if (isFastBoot()) {
-      return publicTree;
-    }
-
-    var options = this.fractionOptions;
-    var trees = [];
-
-    if (publicTree) {
-      trees.push(publicTree);
-    }
-
-    return mergeTrees(trees);
-  },
-
-  treeForVendor: function(vendorTree) {
-    if (isFastBoot()) {
-      return this.treeForNodeVendor(vendorTree);
-    } else {
-      return this.treeForBrowserVendor(vendorTree);
-    }
-  },
-
-  treeForNodeVendor: function(vendorTree) {
-    var trees = [];
-    var options = this.fractionOptions;
-
-    if (vendorTree) {
-      trees.push(vendorTree);
-    }
-
-    var fileName;
-
-    fileName = 'fastboot-fraction.js';
-
-    var tree = new Funnel(path.join(__dirname, './assets'), {
-      files: [fileName],
-    });
-
-    tree = rename(tree, function() {
-      return 'fastboot-fraction.js';
-    });
-
-    trees.push(tree);
-
-    return mergeTrees(trees);
-  },
-
-  treeForBrowserVendor: function(vendorTree) {
-    var trees = [];
-    var options = this.fractionOptions;
-
-    if (vendorTree) {
-      trees.push(vendorTree);
-    }
-
-    trees.push(new Funnel(options.fractionPath, {
-      destDir: 'fraction.js',
-      include: [new RegExp(/\.js$/)],
-      exclude: ['tests', 'ender', 'package'].map(function(key) {
-        return new RegExp(key + '\.js$');
-      })
-    }));
-
-    return mergeTrees(trees);
-  }
+const defaultOptions = {
+  'importDirectionalNavigation': false,
+  'importGamepadToVK': false,
+  'importMediaPlayer': false,
+  'importScrollViewer': false,
+  'importSearchBox': false
 };
 
-// Checks to see whether this build is targeting FastBoot. Note that we cannot
-// check this at boot time--the environment variable is only set once the build
-// has started, which happens after this file is evaluated.
-function isFastBoot() {
-  return process.env.EMBER_CLI_FASTBOOT === 'true';
-}
+module.exports = {
+  name: 'ember-cli-tvhelpers',
+
+  included(app) {
+    // workaround for https://github.com/ember-cli/ember-cli/issues/3718
+    if (typeof app.import !== 'function' && app.app) {
+      app = app.app;
+    }
+    this.app = app;
+
+    let options = extend(extend({}, defaultOptions), app.options['ember-cli-tvhelpers']);
+
+    var vendor = this.treePaths.vendor;
+
+    this.TVHelpersOptions = options;
+    app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','DirectionalNavigation','directionalnavigation-1.0.0.0.js'));
+    app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','MediaPlayer','mediaplayer-1.0.0.0.js'));
+    app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','GamepadToVK','gamepadtokey-1.0.0.0.js'));
+
+    // if (options.importDirectionalNavigation) {
+    //
+    // }
+    // if (options.importGamepadToVK) {
+    //   app.import("/bower_components/TVHelpers/tvjs/src/GamepadToVK/gamepadtokey-1.0.0.0.js")
+    // }
+    // if (options.importMediaPlayer) {
+    //   app.import("/bower_components/TVHelpers/tvjs/src/MediaPlayer/mediaplayer-1.0.0.0.js")
+    // }
+    // if (options.importScrollViewer) {
+    //   app.import("/bower_components/TVHelpers/tvjs/src/ScrollViewer/scrollviewer-1.0.0.0.js")
+    // }
+    // if (options.importSearchBox) {
+    //   app.import("/bower_components/TVHelpers/tvjs/src/SearchBox/searchbox-1.0.0.0.js")
+    // }
+  },
+
+  treeForVendor(tree) {
+    let trees = [tree];
+
+    return mergeTrees(trees);
+  },
+
+  getTVHelpersVersion() {
+    return parseInt(this.TVHelpersOptions.TVHelpersVersion);
+  },
+
+  // treeForAddon() {
+  //   let tree = this._super.treeForAddon.apply(this, arguments);
+    // let TVHelpersVersion = this.getTVHelpersVersion();
+    // let componentsPath = 'modules/ember-cli-tvhelpers/components/';
+    // tree = mv(tree, `${componentsPath}/`, componentsPath);
+    // return tree; // log(tree, {output: 'tree', label: 'moved'});
+  // },
+
+  // treeForAddonTemplates() {
+    // let tree = this._super.treeForAddonTemplates.apply(this, arguments);
+    // let TVHelpersVersion = this.getTVHelpersVersion();
+    // let templatePath = 'components/';
+    // tree = mv(tree, `${templatePath}common/`, templatePath);
+    // tree = mv(tree, `${templatePath}bs${bsVersion}/`, templatePath);
+    // tree = rm(tree, `${templatePath}bs${otherBsVersion}/**/*`);
+  //   return tree; //log(tree, {output: 'tree', label: 'moved'});
+  // },
+
+  // contentFor(type, config) {
+  //   if (type === 'body-footer' && config.environment !== 'test' && this.bootstrapOptions.insertEmberWormholeElementToDom !== false) {
+  //     return '<div id="ember-cli-tvhelpers-wormhole"></div>';
+  //   }
+  // }
+};

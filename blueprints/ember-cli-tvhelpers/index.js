@@ -23,7 +23,7 @@ module.exports = {
 
   addDependencies() {
     // let dependencies = this.project.dependencies();
-    
+    let promises = [];
     promises.push(this.addBowerPackageToProject('TVHelpers', tvHelpersVersion));
 
     return rsvp.all(promises);
