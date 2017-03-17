@@ -4,7 +4,7 @@
 const path = require('path');
 const util = require('util');
 const extend = util._extend;
-const mergeTrees = require('broccoli-merge-trees');
+// const mergeTrees = require('broccoli-merge-trees');
 const Funnel = require('broccoli-funnel');
 const stew = require('broccoli-stew');
 const mv = stew.mv;
@@ -54,12 +54,6 @@ module.exports = {
     // if (options.importSearchBox) {
     //   app.import("/bower_components/TVHelpers/tvjs/src/SearchBox/searchbox-1.0.0.0.js")
     // }
-  },
-
-  treeForVendor(tree) {
-    let trees = [tree];
-
-    return mergeTrees(trees);
   },
 
   getTVHelpersVersion() {
