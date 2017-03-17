@@ -4,7 +4,13 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
-    // Add options here
+    'ember-cli-tvhelpers': {
+      'importDirectionalNavigation': false,
+      'importGamepadToVK': false,
+      'importMediaPlayer': false,
+      'importScrollViewer': false,
+      'importSearchBox': false
+    }
   });
 
   /*

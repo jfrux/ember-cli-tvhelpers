@@ -1,18 +1,21 @@
 # ember-cli-tvhelpers
 
-This README outlines the details of collaborating on this Ember addon.
+The goal of this project is to gradually bring in useful functionality from the Microsoft/TVHelpers library and make it usable in Ember.
+As of right now, it has not been tested in production.
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd ember-cli-tvhelpers`
-* `npm install`
-* `bower install`
+```sh
+$ ember install ember-cli-tvhelpers
+```
 
-## Running
+## Todo
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+- [ ] Inject all tvjs modules into the page source using Ember.
+- [ ] Allow overrides to which libraries to include within your ember-cli-build.
+- [ ] TBD. Create a service to access any relevant API's
+- [ ] TBD. Determine and implement helpers / components that make sense for Ember.
+- [ ] TBD. There may be use for a Windows.UI service, but may be a separate addon.
 
 ## Running Tests
 
