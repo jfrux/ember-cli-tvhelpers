@@ -37,7 +37,7 @@ module.exports = {
     this.TVHelpersOptions = options;
     app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','DirectionalNavigation','directionalnavigation-1.0.0.0.js'));
     app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','MediaPlayer','mediaplayer-1.0.0.0.js'));
-    app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','GamepadToVK','gamepadtokey-1.0.0.0.js'));
+    // app.import(path.join(this.app.bowerDirectory, 'TVHelpers', 'tvjs','src','GamepadToVK','gamepadtokey-1.0.0.0.js'));
 
     // if (options.importDirectionalNavigation) {
     //
