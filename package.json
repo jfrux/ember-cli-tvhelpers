@@ -3,10 +3,16 @@
   "version": "0.0.2",
   "description": "An attempt at getting Microsoft/TVHelpers into Ember",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "tvhelpers",
+    "xbox",
+    "microsoft",
+    "winrt",
+    "winjs",
+    "windows"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Joshua F. Rountree <joshua.rountree@scripps.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
