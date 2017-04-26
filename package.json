@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-tvhelpers",
   "version": "0.0.2",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "An attempt at getting Microsoft/TVHelpers into Ember",
   "keywords": [
     "ember-addon"
   ],
