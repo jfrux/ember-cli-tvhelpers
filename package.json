@@ -23,9 +23,6 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "dependencies": {
-    "ember-cli-babel": "6.0.0"
-  },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^2.4.1",
