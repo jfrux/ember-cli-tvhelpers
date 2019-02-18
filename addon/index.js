@@ -2,7 +2,7 @@
 
 import Ember from 'ember';
 
-const TVJS = self.TVJS;
+var TVJS = self.TVJS;
 
 
 export default TVJS;

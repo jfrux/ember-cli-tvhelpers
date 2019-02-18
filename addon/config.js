@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const Config = Ember.Object.extend();
+var Config = Ember.Object.extend();
 
 Config.reopenClass({
   load(config = {}) {

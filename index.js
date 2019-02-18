@@ -1,18 +1,18 @@
 /* eslint-env node */
 'use strict';
 
-const path = require('path');
-const util = require('util');
-const extend = util._extend;
-// const mergeTrees = require('broccoli-merge-trees');
-const Funnel = require('broccoli-funnel');
-const stew = require('broccoli-stew');
-const mv = stew.mv;
-// const log = stew.log;
-const rm = stew.rm;
-const chalk = require('chalk');
+var path = require('path');
+var util = require('util');
+var extend = util._extend;
+// var mergeTrees = require('broccoli-merge-trees');
+var Funnel = require('broccoli-funnel');
+var stew = require('broccoli-stew');
+var mv = stew.mv;
+// var log = stew.log;
+var rm = stew.rm;
+var chalk = require('chalk');
 
-const defaultOptions = {
+var defaultOptions = {
   'importDirectionalNavigation': false,
   'importGamepadToVK': false,
   'importMediaPlayer': false,
