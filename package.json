@@ -24,8 +24,8 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli": "^2.18.0",
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli": "*",
+    "ember-cli-babel": "*"
   },
   "engines": {
     "node": ">= 0.12.0"
